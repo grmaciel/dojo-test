@@ -17,7 +17,7 @@ I've created a custom component used in the main screen that you can drag the ca
 I've customized the Android RatingBar for the match details info, since i didn't have different images for the different resolutions (mdhdpi, xhdpi, ...) i've used a fixed drawable to represent each item and i'm aware that the rating bar don't adjust to the screen so if tried devices with resolution smaller thant the ones i've tested it may look buggy with the steps not being properly set.
 
 **Horizontal Badge Scroll Inside Cards**<br>
-I've used a ViewPager inside each card item so you can add more than one throphys to be shown, like i've seen in some screen 
+I've used a ViewPager inside each card item so you can add more than one trophies to be shown, like i've seen in some screen 
 of the app. I'm not sure if memory-wise this would be the best option, it is working as expected but sometimes when you scroll too fast it jumps to the next item, looking a bit odd. I think that you could achieve the same behaviour using a horizontal recycler view and customizing it so it shows only an item at a time, i didn't had the time to implement/test it so i stayed with the ViewPager.
 
 **Synchronization / Domain**<br>
