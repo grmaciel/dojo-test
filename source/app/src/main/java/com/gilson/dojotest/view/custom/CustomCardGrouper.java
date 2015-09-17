@@ -104,14 +104,10 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
             return;
         }
 
-        Log.d("", "POPULATE CARD DATA");
-
         TextView txt = (TextView) bottom.findViewById(R.id.txtCardStatus);
         txt.setText(ViewUtil.getMatchPlayerSpannable(getContext(), matchStatus, champion));
-
         TextView txtMatch = (TextView) bottom.findViewById(R.id.txtCardMatch);
         txtMatch.setText(matchDetail);
-
         ImageView img = (ImageView) bottom.findViewById(R.id.imgMatchRank);
         img.setImageResource(badgeResource);
     }
