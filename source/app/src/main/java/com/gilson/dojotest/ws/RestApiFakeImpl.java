@@ -4,6 +4,7 @@ import com.gilson.dojotest.ws.dto.MatchDetailDto;
 import com.gilson.dojotest.ws.dto.MatchDto;
 import com.gilson.dojotest.ws.dto.MatchHistoryDto;
 import com.gilson.dojotest.ws.dto.MatchStatsDto;
+import com.gilson.dojotest.ws.dto.PerformanceDto;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -11,7 +12,12 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -99,25 +105,64 @@ public class RestApiFakeImpl implements RestApi {
                      * WS Query
                      */
                     Thread.sleep(2000);
-                    GsonBuilder builder = new GsonBuilder();
-                    MatchStatsDto stats = builder.create().fromJson(getJsonDetail(), MatchStatsDto.class);
-                    subscriber.onNext(stats.details);
-                } catch (InterruptedException e) {
+
+                    JSONObject obj = new JSONObject(getJsonDetail());
+
+                    if (obj.has("match_stats")){
+                        JSONArray array = new JSONObject(getJsonDetail()).getJSONArray("match_stats");
+
+                        List<MatchDetailDto> details = new ArrayList<>();
+
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject stats = array.getJSONObject(i);
+
+                            MatchDetailDto detail = new MatchDetailDto();
+                            detail.idGame = stats.getLong("game_id");
+                            detail.performance = new ArrayList<>();
+
+                            JSONArray performances = stats
+                                    .getJSONArray("performanceBreakedown");
+
+                            for (int j = 0; j < performances.length(); j++) {
+                                detail.performance.add(getDetailDto(performances.getJSONObject(j)));
+                            }
+
+                            details.add(detail);
+                        }
+
+                        subscriber.onNext(details);
+                        subscriber.onCompleted();
+                    }
+                } catch (Exception e) {
                     subscriber.onError(e);
                     e.printStackTrace();
                 }
 
-                subscriber.onCompleted();
             }
         }).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .cache();
     }
 
+    private PerformanceDto getDetailDto(JSONObject performance) throws JSONException {
+        PerformanceDto perfDto = new PerformanceDto();
+        perfDto.performance = (String) performance.remove("performance");
+        JSONArray names = performance.names();
+
+        for (int i = 0; i < names.length(); i++) {
+            String name = names.getString(i);
+            perfDto.label = name;
+            perfDto.value = performance.getString(name);
+        }
+
+        return perfDto;
+    }
+
     /**
      * Not sure if i can call the rest api with a specific match id
      * or if i would just call every detail and the cache it locally, nonetheless i assumed
      * i query all of them and the detail only aswell
+     *
      * @param matchId
      * @return
      */
@@ -132,7 +177,6 @@ public class RestApiFakeImpl implements RestApi {
                                 return Observable.just(detail);
                             }
                         }
-
                         return Observable.empty();
                     }
                 });
@@ -142,8 +186,7 @@ public class RestApiFakeImpl implements RestApi {
         return "{\n" +
                 "    \"summoner_id\":35547295,\n" +
                 "    \"match_stats\":[\n" +
-                "        {\n" +
-                "            \"game_id\":2296261271,\n" +
+                "            {\"game_id\":2296261271,\n" +
                 "            \"performanceBreakedown\":[\n" +
                 "                {\n" +
                 "                    \"CS\":130,\n" +
@@ -165,8 +208,8 @@ public class RestApiFakeImpl implements RestApi {
                 "                    \"GPM\":500,\n" +
                 "                    \"performance\":\"gold\"\n" +
                 "                }\n" +
-                "            ],\n" +
-                "            \"game_id\":2295841949,\n" +
+                "            ]},\n" +
+                "            {\"game_id\":2295841949,\n" +
                 "            \"performanceBreakedown\":[\n" +
                 "                {\n" +
                 "                    \"CS\":130,\n" +
@@ -188,7 +231,7 @@ public class RestApiFakeImpl implements RestApi {
                 "                    \"GPM\":600,\n" +
                 "                    \"performance\":\"platinum\"\n" +
                 "                }\n" +
-                "            ],\n" +
+                "            ]}, {\n" +
                 "            \"game_id\":2294240279,\n" +
                 "            \"performanceBreakedown\":[\n" +
                 "                {\n" +
@@ -211,10 +254,9 @@ public class RestApiFakeImpl implements RestApi {
                 "                    \"GPM\":700,\n" +
                 "                    \"performance\":\"master\"\n" +
                 "                }\n" +
-                "            ]\n" +
-                "        }\n" +
+                "            ]}\n" +
                 "    ]\n" +
-                "}";
+                "}\n";
     }
 
     private String getJsonMatches() {

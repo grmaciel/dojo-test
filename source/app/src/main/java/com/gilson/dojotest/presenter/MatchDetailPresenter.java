@@ -38,7 +38,7 @@ public class MatchDetailPresenter {
 
                     @Override
                     public void onNext(MatchDetailDto matchDetailDto) {
-                        Log.d("", "DETAIL" + matchDetailDto.idGame);
+                        view.renderMatchDetail(matchDetailDto.performance);
                     }
                 });
     }

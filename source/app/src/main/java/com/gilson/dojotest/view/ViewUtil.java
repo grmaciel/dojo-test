@@ -14,6 +14,10 @@ import com.gilson.dojotest.R;
 public class ViewUtil {
     public static int getBadgeResource(String badgeName) {
         switch (badgeName) {
+            case "master":
+                return R.drawable.badge_master;
+            case "silver":
+                return R.drawable.badge_silver;
             case "platinum":
                 return R.drawable.badge_platinum;
             case "challenger":
@@ -22,6 +26,25 @@ public class ViewUtil {
                 return R.drawable.badge_diamond;
             case "gold":
                 return R.drawable.badge_gold;
+        }
+
+        return -1;
+    }
+
+    public static int getBadLevel(String badgeName) {
+        switch (badgeName) {
+            case "silver":
+                return 2;
+            case "gold":
+                return 3;
+            case "platinum":
+                return 4;
+            case "diamond":
+                return 5;
+            case "master":
+                return 6;
+            case "challenger":
+                return 7;
         }
 
         return -1;

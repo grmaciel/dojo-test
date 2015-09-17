@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
+    android:background="@color/DojoActionBar"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -12,15 +12,13 @@
         style="@style/BoldWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:text="123 cs" />
+        android:layout_alignParentLeft="true"/>
 
     <ImageView
         android:id="@+id/imgBadgeDetail"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/badge_diamond" />
+        android:layout_alignParentRight="true"/>
 
 
     <RatingBar
@@ -32,7 +30,6 @@
         android:layout_marginTop="10dp"
         android:isIndicator="true"
         android:numStars="7"
-        android:rating="3"
         android:stepSize="1" />
 
     <TextView
@@ -41,7 +38,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/ratingMatchDetail"
-        android:text="Gold Performance" />
+        android:layout_below="@id/ratingMatchDetail" />
 
 </RelativeLayout>

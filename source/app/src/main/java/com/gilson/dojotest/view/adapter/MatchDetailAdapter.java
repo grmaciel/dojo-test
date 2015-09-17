@@ -7,11 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.gilson.dojotest.R;
+import com.gilson.dojotest.view.ViewUtil;
 import com.gilson.dojotest.view.activity.MatchDetailActivity;
 import com.gilson.dojotest.ws.dto.MatchDetailDto;
+import com.gilson.dojotest.ws.dto.PerformanceDto;
 
 import java.util.List;
 
@@ -23,9 +26,9 @@ import butterknife.ButterKnife;
  */
 public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.DetailViewHolder> {
     private final Context context;
-    private final List<MatchDetailDto> data;
+    private final List<PerformanceDto> data;
 
-    public MatchDetailAdapter(Context context, List<MatchDetailDto> data) {
+    public MatchDetailAdapter(Context context, List<PerformanceDto> data) {
         this.context = context;
         this.data = data;
     }
@@ -42,6 +45,11 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
 
     @Override
     public void onBindViewHolder(DetailViewHolder holder, int position) {
+        PerformanceDto dto = data.get(position);
+        holder.txtMatch.setText(dto.label);
+        holder.txtPerformance.setText(dto.performance + " " + context.getResources().getString(R.string.performance));
+        holder.imgBadge.setImageResource(ViewUtil.getBadgeResource(dto.performance));
+        holder.ratingMatchDetail.setRating(ViewUtil.getBadLevel(dto.performance));
     }
 
     @Override
@@ -56,6 +64,8 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         TextView txtMatch;
         @Bind(R.id.txtPerformanceDetail)
         TextView txtPerformance;
+        @Bind(R.id.ratingMatchDetail)
+        RatingBar ratingMatchDetail;
 
         public DetailViewHolder(View itemView) {
             super(itemView);

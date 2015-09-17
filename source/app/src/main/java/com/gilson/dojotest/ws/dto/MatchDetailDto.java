@@ -10,5 +10,6 @@ import java.util.List;
 public class MatchDetailDto {
     @SerializedName("game_id")
     public long idGame;
+    @SerializedName("performanceBreakedown")
     public List<PerformanceDto> performance;
 }

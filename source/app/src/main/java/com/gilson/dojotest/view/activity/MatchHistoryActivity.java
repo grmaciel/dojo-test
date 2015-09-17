@@ -11,6 +11,7 @@ import com.gilson.dojotest.di.component.DaggerMatchPresenterComponent;
 import com.gilson.dojotest.di.module.MatchPresenterModule;
 import com.gilson.dojotest.presenter.MatchHistoryPresenter;
 import com.gilson.dojotest.view.MatchView;
+import com.gilson.dojotest.view.ViewUtil;
 import com.gilson.dojotest.view.adapter.CustomItemDecorator;
 import com.gilson.dojotest.view.adapter.IOnItemClickListener;
 import com.gilson.dojotest.view.adapter.MatchHistoryAdapter;
@@ -76,7 +77,9 @@ public class MatchHistoryActivity extends BaseActivity implements MatchView {
             @Override
             public void onClick(View view, MatchDto data) {
                 startActivity(MatchDetailActivity
-                        .getIntent(MatchHistoryActivity.this, data.id));
+                        .getIntent(MatchHistoryActivity.this,
+                                data.id,
+                                ViewUtil.getBadgeResource(data.totalPerformance)));
             }
         };
     }
