@@ -13,6 +13,7 @@ import com.gilson.dojotest.R;
 import com.gilson.dojotest.presenter.MatchDetailPresenter;
 import com.gilson.dojotest.view.MatchDetailView;
 import com.gilson.dojotest.view.adapter.MatchDetailAdapter;
+import com.gilson.dojotest.view.adapter.MatchDetailDecorator;
 import com.gilson.dojotest.view.adapter.MatchHistoryAdapter;
 import com.gilson.dojotest.ws.RestApiFakeImpl;
 import com.gilson.dojotest.ws.dto.MatchDetailDto;
@@ -67,7 +68,10 @@ public class MatchDetailActivity extends BaseActivity implements MatchDetailView
     public void renderMatchDetail(List<PerformanceDto> data) {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         matchDetailRecycler.setLayoutManager(llm);
+        matchDetailRecycler.addItemDecoration(
+                new MatchDetailDecorator(this.getResources().getDrawable(R.drawable.detail_separator_bg)));
         matchDetailRecycler.setAdapter(new MatchDetailAdapter(this, data));
+
     }
 
     @Override

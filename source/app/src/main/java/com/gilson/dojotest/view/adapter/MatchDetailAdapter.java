@@ -1,7 +1,6 @@
 package com.gilson.dojotest.view.adapter;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 
 import com.gilson.dojotest.R;
 import com.gilson.dojotest.view.ViewUtil;
-import com.gilson.dojotest.view.activity.MatchDetailActivity;
-import com.gilson.dojotest.ws.dto.MatchDetailDto;
 import com.gilson.dojotest.ws.dto.PerformanceDto;
 
 import java.util.List;
@@ -49,7 +46,7 @@ public class MatchDetailAdapter extends RecyclerView.Adapter<MatchDetailAdapter.
         holder.txtMatch.setText(dto.label);
         holder.txtPerformance.setText(dto.performance + " " + context.getResources().getString(R.string.performance));
         holder.imgBadge.setImageResource(ViewUtil.getBadgeResource(dto.performance));
-        holder.ratingMatchDetail.setRating(ViewUtil.getBadLevel(dto.performance));
+        holder.ratingMatchDetail.setRating(ViewUtil.getBadgeLevel(dto.performance));
     }
 
     @Override

@@ -2,11 +2,7 @@ package com.gilson.dojotest.view.custom;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.os.Handler;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -30,7 +26,7 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
     private float mStartViewY;
     private boolean moving = false;
     private float movableCardY;
-    private IOnCardDragListener onCardDragListener;
+    private ICardListener cardListener;
     private View bottom;
     private String matchStatus;
     private String champion;
@@ -46,8 +42,8 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
                               String champion,
                               String matchDetail,
                               int badgeResource,
-                              IOnCardDragListener dragListener) {
-        this.onCardDragListener = dragListener;
+                              ICardListener cardListener) {
+        this.cardListener = cardListener;
         this.matchStatus = matchStatus;
         this.champion = champion;
         this.matchDetail = matchDetail;
@@ -73,15 +69,12 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
          * Fixed rendering of three cards
          * the bottom being the only one that can be dragged
          */
-        int biggerHeight = (int) (this.getHeight() * 0.8);
         int smallHeight = (int) (this.getHeight() * 0.3);
 
         this.bottom = LayoutInflater.from(getContext()).inflate(R.layout.movable_card_layout, null);//new View(getContext());
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, this.getHeight());
         bottom.setLayoutParams(layoutParams);
         bottom.setBackgroundResource(R.drawable.card_background);
-        bottom.setY(this.getPivotY() - biggerHeight / 2);
-
         movableCardY = bottom.getY();
 
         View medium = new View(getContext());
@@ -127,6 +120,8 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
                 getContext().getResources().getDisplayMetrics());
     }
 
+
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -168,7 +163,7 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
 
                 if (mStartViewY - v.getY() > 100) {
                     moving = false;
-                    onCardDragListener.onCardDragged();
+                    cardListener.onCardDragged();
                     this.recreateView();
                     break;
                 }
@@ -181,7 +176,7 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
                 Log.d("", "V1 " + v1);
 
                 if (v1 <= 0 && v1 > -10) {
-                    Log.d("", "CLICK ");
+                    cardListener.onCardClick();
                 } else {
                     animateViewToPosition(v, mStartViewY);
                 }

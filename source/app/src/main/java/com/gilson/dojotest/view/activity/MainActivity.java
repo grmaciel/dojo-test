@@ -1,7 +1,6 @@
 package com.gilson.dojotest.view.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,15 +14,15 @@ import com.gilson.dojotest.presenter.MainPresenter;
 import com.gilson.dojotest.view.MainView;
 import com.gilson.dojotest.view.ViewUtil;
 import com.gilson.dojotest.view.custom.CustomCardGrouper;
-import com.gilson.dojotest.view.custom.IOnCardDragListener;
-import com.gilson.dojotest.ws.RestApiFakeImpl;
+import com.gilson.dojotest.view.custom.ICardListener;
+import com.gilson.dojotest.ws.dto.MatchDto;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements IOnCardDragListener, MainView {
+public class MainActivity extends BaseActivity implements ICardListener, MainView {
 
     @Bind(R.id.cardGrouper)
     CustomCardGrouper cardGrouper;
@@ -31,6 +30,8 @@ public class MainActivity extends BaseActivity implements IOnCardDragListener, M
     RelativeLayout rlProgress;
     @Inject
     MainPresenter presenter;
+
+    private MatchDto matchCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +74,22 @@ public class MainActivity extends BaseActivity implements IOnCardDragListener, M
     }
 
     @Override
-    public void renderCardsResume(boolean win, String champion, String matchDetail, int badgeResId) {
+    public void onCardClick() {
+        startActivity(MatchDetailActivity.getIntent(this,
+                matchCard.id,
+                ViewUtil.getBadgeResource(matchCard.totalPerformance)));
+    }
+
+    @Override
+    public void renderCardsResume(MatchDto match) {
+        this.matchCard = match;
         cardGrouper.setVisibility(View.VISIBLE);
         cardGrouper.configureCard(
-                ViewUtil.getMatchStatus(this, win),
-                champion,
-                matchDetail + " " +
+                ViewUtil.getMatchStatus(this, match.win),
+                match.champion,
+                match.gameMode + " • " + match.lane + " " +
                         this.getResources().getString(R.string.lane),
-                badgeResId,
+                ViewUtil.getBadgeResource(match.totalPerformance),
                 this);
     }
 

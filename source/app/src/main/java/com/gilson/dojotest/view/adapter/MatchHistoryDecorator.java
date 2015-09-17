@@ -12,14 +12,14 @@ import com.gilson.dojotest.R;
 /**
  * Created by Gilson Maciel on 16/09/2015.
  */
-public class CustomItemDecorator extends RecyclerView.ItemDecoration {
+public class MatchHistoryDecorator extends RecyclerView.ItemDecoration {
     private final Context context;
     private final Drawable separator;
 
-    public CustomItemDecorator(Context context) {
+    public MatchHistoryDecorator(Context context) {
         this.context = context;
         this.separator = context.getResources()
-                .getDrawable(R.drawable.separator_bg);
+                .getDrawable(R.drawable.match_separator_bg);
     }
 
     @Override

@@ -46,10 +46,7 @@ public class MainPresenter {
                     @Override
                     public void onNext(List<MatchDto> matchDtos) {
                         MatchDto firstMatch = matchDtos.get(0);
-                        view.renderCardsResume(firstMatch.win,
-                                firstMatch.champion,
-                                firstMatch.gameMode + " • " + firstMatch.lane,
-                                ViewUtil.getBadgeResource(firstMatch.totalPerformance));
+                        view.renderCardsResume(firstMatch);
                     }
                 });
     }

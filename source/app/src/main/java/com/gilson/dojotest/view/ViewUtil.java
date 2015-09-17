@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
 import com.gilson.dojotest.R;
+import com.gilson.dojotest.domain.Badge;
 
 /**
  * Created by Gilson Maciel on 16/09/2015.
@@ -31,20 +32,20 @@ public class ViewUtil {
         return -1;
     }
 
-    public static int getBadLevel(String badgeName) {
+    public static int getBadgeLevel(String badgeName) {
         switch (badgeName) {
             case "silver":
-                return 2;
+                return Badge.SILVER;
             case "gold":
-                return 3;
+                return Badge.GOLD;
             case "platinum":
-                return 4;
+                return Badge.PLATINUM;
             case "diamond":
-                return 5;
+                return Badge.DIAMOND;
             case "master":
-                return 6;
+                return Badge.MASTER;
             case "challenger":
-                return 7;
+                return Badge.CHALLENGER;
         }
 
         return -1;

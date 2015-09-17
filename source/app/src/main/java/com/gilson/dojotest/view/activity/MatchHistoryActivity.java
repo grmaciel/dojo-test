@@ -1,6 +1,5 @@
 package com.gilson.dojotest.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,7 @@ import com.gilson.dojotest.di.module.MatchPresenterModule;
 import com.gilson.dojotest.presenter.MatchHistoryPresenter;
 import com.gilson.dojotest.view.MatchView;
 import com.gilson.dojotest.view.ViewUtil;
-import com.gilson.dojotest.view.adapter.CustomItemDecorator;
+import com.gilson.dojotest.view.adapter.MatchHistoryDecorator;
 import com.gilson.dojotest.view.adapter.IOnItemClickListener;
 import com.gilson.dojotest.view.adapter.MatchHistoryAdapter;
 import com.gilson.dojotest.ws.dto.MatchDto;
@@ -54,7 +53,7 @@ public class MatchHistoryActivity extends BaseActivity implements MatchView {
         matchInfoRecycler.setAdapter(new
                 MatchHistoryAdapter(this, matches,
                 getOnItemClickListener()));
-        matchInfoRecycler.addItemDecoration(new CustomItemDecorator(this));
+        matchInfoRecycler.addItemDecoration(new MatchHistoryDecorator(this));
     }
 
     @Override

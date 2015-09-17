@@ -86,7 +86,7 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void setupViewPager(PlayerViewHolder holder, int position, MatchDto item) {
+    private void setupViewPager(final PlayerViewHolder holder, int position, MatchDto item) {
         RankPagerDto dto = new RankPagerDto();
         dto.parentPosition = position;
         dto.performance = item.totalPerformance;
@@ -100,13 +100,61 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
             extra.parentPosition = position;
             extra.performance = "gold";
 
+            RankPagerDto[] pages = {dto, extra};
+
             holder.playerRankPager.setAdapter(new RankPagerAdapter(context,
-                    new RankPagerDto[]{dto, extra},
+                    pages,
                     getOnPagerItemClick()));
+            holder.playerRankPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    configureScrollArrow(holder);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            });
         } else {
             holder.playerRankPager.setAdapter(new RankPagerAdapter(context,
                     new RankPagerDto[]{dto},
                     getOnPagerItemClick()));
+        }
+
+        configureScrollArrow(holder);
+    }
+
+    private void configureScrollArrow(final PlayerViewHolder holder) {
+        int childCount = holder.playerRankPager.getAdapter().getCount();
+
+        final int currentItem = holder.playerRankPager.getCurrentItem();
+
+        if (currentItem > 0) {
+            holder.arrowLeft.setVisibility(View.VISIBLE);
+            holder.arrowLeft.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.playerRankPager.setCurrentItem(currentItem-1);
+                }
+            });
+        } else {
+            holder.arrowLeft.setVisibility(View.INVISIBLE);
+        }
+
+        if (currentItem < childCount - 1) {
+            holder.arrowRight.setVisibility(View.VISIBLE);
+            holder.arrowRight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.playerRankPager.setCurrentItem(currentItem+1);
+                }
+            });
+        } else {
+            holder.arrowRight.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -133,6 +181,11 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
         TextView txtStatus;
         @Bind(R.id.txtMatchRank)
         TextView txtRank;
+        @Bind(R.id.imgArrowLeft)
+        ImageView arrowLeft;
+        @Bind(R.id.imgArrowRight)
+        ImageView arrowRight;
+
 
         public PlayerViewHolder(View itemView) {
             super(itemView);
