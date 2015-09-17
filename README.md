@@ -36,6 +36,6 @@ Sorry, i ended up not having time for them :/
 
 
 **Libraries**<br>
-Dagger 2 - Dependency Injection (Injecting the view presenters / rest api / context)
-ButterKnife - View Injection
+Dagger 2 - Dependency Injection (Injecting the view presenters / rest api / context)<br>
+ButterKnife - View Injection<br>
 RxJava - Using for querying / async processing
