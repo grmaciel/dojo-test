@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+
+    <TextView
+        android:id="@+id/txtMatchDetail"
+        style="@style/BoldWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="123 cs" />
+
+    <ImageView
+        android:id="@+id/imgBadgeDetail"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/badge_diamond" />
+
+
+    <RatingBar
+        android:id="@+id/ratingMatchDetail"
+        style="@style/CustomRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgBadgeDetail"
+        android:layout_marginTop="10dp"
+        android:isIndicator="true"
+        android:numStars="7"
+        android:rating="3"
+        android:stepSize="1" />
+
+    <TextView
+        style="@style/CardSmallGray"
+        android:id="@+id/txtPerformanceDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/ratingMatchDetail"
+        android:text="Gold Performance" />
+
+</RelativeLayout>

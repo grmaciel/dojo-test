@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">DojoTest</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="performance">Performance</string>
+    <string name="as">as</string>
+    <string name="win">Win</string>
+    <string name="defeat">Defeat</string>
+    <string name="lane">lane</string>
+
+</resources>
