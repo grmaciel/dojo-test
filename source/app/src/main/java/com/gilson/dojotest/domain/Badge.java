@@ -9,11 +9,6 @@ import android.support.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * I'm aware of enum evilness has been talked about and to avoid them at all costs
- * (https://www.youtube.com/watch?v=Hzs6OBcvNQE)
- * but for the code in here
- */
 public interface Badge {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({BRONZE, SILVER, GOLD, PLATINUM, DIAMOND, MASTER, CHALLENGER})

@@ -5,21 +5,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.gilson.dojotest.R;
+import com.gilson.dojotest.di.component.DaggerMatchDetailPresenterComponent;
+import com.gilson.dojotest.di.module.MatchDetailPresenterModule;
 import com.gilson.dojotest.presenter.MatchDetailPresenter;
 import com.gilson.dojotest.view.MatchDetailView;
 import com.gilson.dojotest.view.adapter.MatchDetailAdapter;
 import com.gilson.dojotest.view.adapter.MatchDetailDecorator;
-import com.gilson.dojotest.view.adapter.MatchHistoryAdapter;
-import com.gilson.dojotest.ws.RestApiFakeImpl;
-import com.gilson.dojotest.ws.dto.MatchDetailDto;
+import com.gilson.dojotest.ws.dto.MatchDto;
 import com.gilson.dojotest.ws.dto.PerformanceDto;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,7 +34,7 @@ import butterknife.ButterKnife;
  */
 public class MatchDetailActivity extends BaseActivity implements MatchDetailView {
     private static final String PARAM_ID_MATCH = "PARAM_ID_MATCH";
-    private static final String PARAM_ID_BADGE_RES= "PARAM_BADGE_RES";
+    private static final String PARAM_ID_BADGE_RES = "PARAM_BADGE_RES";
 
     @Bind(R.id.imgBadgeDetail)
     ImageView imgBadge;
@@ -37,7 +42,19 @@ public class MatchDetailActivity extends BaseActivity implements MatchDetailView
     RecyclerView matchDetailRecycler;
     @Bind(R.id.rlProgress)
     RelativeLayout rlProgress;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
+    @Bind(R.id.toolbarPlayerName)
+    TextView toolbarPlayerName;
+    @Bind(R.id.toolbarInfo)
+    TextView toolbarInfo;
+    @Bind(R.id.toolbarLane)
+    TextView toolbarLane;
     private long idMatch;
+
+    @Inject
+    MatchDetailPresenter presenter;
 
     public static Intent getIntent(Context context, Long idMatch, int badgeResId) {
         Intent intent = new Intent(context, MatchDetailActivity.class);
@@ -50,6 +67,17 @@ public class MatchDetailActivity extends BaseActivity implements MatchDetailView
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_detail);
@@ -58,10 +86,32 @@ public class MatchDetailActivity extends BaseActivity implements MatchDetailView
 
         Bundle bundle = getIntent().getExtras();
         this.idMatch = bundle.getLong(PARAM_ID_MATCH);
-
         imgBadge.setImageResource(bundle.getInt(PARAM_ID_BADGE_RES));
 
-        MatchDetailPresenter presenter = new MatchDetailPresenter(this, new RestApiFakeImpl());
+        inject();
+        configureToolbar();
+    }
+
+    private void inject() {
+        DaggerMatchDetailPresenterComponent
+                .builder()
+                .applicationComponent(getApplicationComponent())
+                .matchDetailPresenterModule(new MatchDetailPresenterModule(this))
+                .build()
+                .inject(this);
+    }
+
+    private void configureToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+    }
+
+    @Override
+    public void renderToolbarInfo(MatchDto data) {
+        toolbarPlayerName.setText(data.champion);
+        toolbarLane.setText(data.lane);
+        toolbarInfo.setText(data.gameMode);
     }
 
     @Override
@@ -82,11 +132,6 @@ public class MatchDetailActivity extends BaseActivity implements MatchDetailView
     @Override
     public void showLoading() {
         rlProgress.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void showError(Exception e) {
-
     }
 
     @Override

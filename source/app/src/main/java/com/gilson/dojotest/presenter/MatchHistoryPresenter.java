@@ -27,7 +27,7 @@ public class MatchHistoryPresenter {
 
     private void loadData() {
         view.showLoading();
-        api.queryMatches(-1)
+        api.queryMatchs(-1)
                 .map(addTimeDivisions())
                 .subscribe(new Subscriber<List<MatchDto>>() {
                     @Override
@@ -37,7 +37,8 @@ public class MatchHistoryPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        view.showError(e.toString());
+                        view.hideLoading();
                     }
 
                     @Override
@@ -58,9 +59,9 @@ public class MatchHistoryPresenter {
                     MatchDto match = matchDtos.get(i);
 
                     /**
-                     * This needs improvement, i'm not sure how the groupings
-                     * comes from the server with the date provided
-                     * i changed the date a bit so we would have at least two scenarios for now
+                     * I'm not sure how the date groupings comes from the server so
+                     * i created the divisions and changed the date a bit
+                     * so we would have at least two scenarios for now
                      */
                     if (match.createDate.before(first)) {
                         MatchDto division = new MatchDto();

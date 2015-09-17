@@ -11,7 +11,9 @@ import rx.Observable;
  * Created by Gilson Maciel on 16/09/2015.
  */
 public interface RestApi {
-    Observable<List<MatchDto>> queryMatches(long summonerId);
+    Observable<List<MatchDto>> queryMatchs(long summonerId);
+
+    Observable<MatchDto> queryMatch(long matchId);
 
     Observable<List<MatchDetailDto>> queryMatchDetails(long summonerId);
 

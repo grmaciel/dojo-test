@@ -6,7 +6,7 @@ package com.gilson.dojotest.view;
 public interface LoadDataView {
     void showLoading();
 
-    void showError(Exception e);
+    void showError(String error);
 
     void hideLoading();
 }

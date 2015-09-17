@@ -87,8 +87,24 @@ public class RestApiFakeImpl implements RestApi {
     }
 
     @Override
-    public Observable<List<MatchDto>> queryMatches(long summonerId) {
+    public Observable<List<MatchDto>> queryMatchs(long summonerId) {
         return queryMatchsObservable;
+    }
+
+    @Override
+    public Observable<MatchDto> queryMatch(final long matchId) {
+        return this.queryMatchsObservable
+                .flatMap(new Func1<List<MatchDto>, Observable<MatchDto>>() {
+                    @Override
+                    public Observable<MatchDto> call(List<MatchDto> matchDetailDtos) {
+                        for (MatchDto match : matchDetailDtos) {
+                            if (match.id == matchId) {
+                                return Observable.just(match);
+                            }
+                        }
+                        return Observable.empty();
+                    }
+                });
     }
 
     @Override
@@ -104,7 +120,7 @@ public class RestApiFakeImpl implements RestApi {
                     /**
                      * WS Query
                      */
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
 
                     JSONObject obj = new JSONObject(getJsonDetail());
 
@@ -161,7 +177,7 @@ public class RestApiFakeImpl implements RestApi {
     /**
      * Not sure if i can call the rest api with a specific match id
      * or if i would just call every detail and the cache it locally, nonetheless i assumed
-     * i query all of them and the detail only aswell
+     * i could query all of them and the detail only aswell
      *
      * @param matchId
      * @return

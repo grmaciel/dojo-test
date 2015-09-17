@@ -62,11 +62,6 @@ public class MatchHistoryActivity extends BaseActivity implements MatchView {
     }
 
     @Override
-    public void showError(Exception e) {
-
-    }
-
-    @Override
     public void hideLoading() {
 
     }

@@ -120,18 +120,6 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
                 getContext().getResources().getDisplayMetrics());
     }
 
-
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
-    }
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         /**

@@ -99,11 +99,6 @@ public class MainActivity extends BaseActivity implements ICardListener, MainVie
     }
 
     @Override
-    public void showError(Exception e) {
-
-    }
-
-    @Override
     public void hideLoading() {
         rlProgress.setVisibility(View.GONE);
     }

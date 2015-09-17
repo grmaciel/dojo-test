@@ -1,6 +1,5 @@
 package com.gilson.dojotest.di.module;
 
-import com.gilson.dojotest.presenter.MainPresenter;
 import com.gilson.dojotest.presenter.MatchHistoryPresenter;
 import com.gilson.dojotest.view.MatchView;
 import com.gilson.dojotest.ws.RestApi;

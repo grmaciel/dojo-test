@@ -30,8 +30,6 @@ public class MatchHistoryDecorator extends RecyclerView.ItemDecoration {
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent) {
         int center = parent.getPaddingLeft() + parent.getWidth() / 2;
-        int left = parent.getPaddingLeft();
-        int right = parent.getWidth() - parent.getPaddingRight();
 
         for (int i = 1; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
@@ -40,7 +38,7 @@ public class MatchHistoryDecorator extends RecyclerView.ItemDecoration {
             separator.setBounds((int) (center - convertPixelsToDp(10)),
                     top - 70,
                     (int) (center + convertPixelsToDp(10)),
-                    (int) top);
+                    top);
 
             separator.draw(c);
         }
