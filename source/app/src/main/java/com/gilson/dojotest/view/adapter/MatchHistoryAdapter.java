@@ -186,7 +186,6 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
         @Bind(R.id.imgArrowRight)
         ImageView arrowRight;
 
-
         public PlayerViewHolder(View itemView) {
             super(itemView);
 

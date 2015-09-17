@@ -101,6 +101,7 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
     private void populateCardData() {
         if (bottom == null) {
             recreateView();
+            return;
         }
 
         Log.d("", "POPULATE CARD DATA");
@@ -161,7 +162,6 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
             case MotionEvent.ACTION_UP:
                 moving = false;
                 float v1 = v.getY() - mStartViewY;
-                Log.d("", "V1 " + v1);
 
                 if (v1 <= 0 && v1 > -10) {
                     cardListener.onCardClick();
@@ -190,6 +190,6 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
                 addCards();
                 populateCardData();
             }
-        }, 1000);
+        }, 500);
     }
 }

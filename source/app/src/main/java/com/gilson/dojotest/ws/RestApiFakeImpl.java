@@ -3,9 +3,7 @@ package com.gilson.dojotest.ws;
 import com.gilson.dojotest.ws.dto.MatchDetailDto;
 import com.gilson.dojotest.ws.dto.MatchDto;
 import com.gilson.dojotest.ws.dto.MatchHistoryDto;
-import com.gilson.dojotest.ws.dto.MatchStatsDto;
 import com.gilson.dojotest.ws.dto.PerformanceDto;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -124,7 +122,7 @@ public class RestApiFakeImpl implements RestApi {
 
                     JSONObject obj = new JSONObject(getJsonDetail());
 
-                    if (obj.has("match_stats")){
+                    if (obj.has("match_stats")) {
                         JSONArray array = new JSONObject(getJsonDetail()).getJSONArray("match_stats");
 
                         List<MatchDetailDto> details = new ArrayList<>();
@@ -297,7 +295,7 @@ public class RestApiFakeImpl implements RestApi {
                 "            \"lane\":\"top\",\n" +
                 "            \"gameMode\":\"Ranked\",\n" +
                 "            \"gametype\":\"Solo\",\n" +
-                "            \"createDate\":1442016000000,\n" +
+                "            \"createDate\":1442098800000,\n" +
                 "            \"win\":false,\n" +
                 "            \"champion\":\"Vayne\",\n" +
                 "            \"totalPerformance\":\"challenger\"\n" +
