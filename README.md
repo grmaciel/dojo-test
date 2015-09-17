@@ -5,7 +5,7 @@
 **Android version:** minSdk 15 target 23<br>
 I've set minimum platform for the app the same one used buy LoLSumo at Play Store. <br>
 **Language:** Java.<br>
-I'm aware that the Dojo app is written using Kotlin, but i wrote in Java since i'm more familiar with it. I've already written this down so i will start studying Kotlin to get used to it.
+I'm aware that the Dojo app is written using Kotlin, but i wrote in Java since i'm more familiar with. I've already written this down so i will start studying Kotlin to get used to it.
 <p>
 There are some things that i've done in the project that if had the time i would like to test it better on different scenarios and also check if it is really necessary  to work that way into the app and i would like go through some of them.
 
