@@ -130,9 +130,8 @@ public class RestApiFakeImpl implements RestApi {
 
                     if (obj.has("match_stats")) {
                         JSONArray array = obj.getJSONArray("match_stats");
-                        List<MatchDetailDto> details = new ArrayList<>();
-                        extractMatchDetail(array, details);
-                        subscriber.onNext(details);
+
+                        subscriber.onNext(extractMatchDetail(array));
                         subscriber.onCompleted();
                     }
                 } catch (Exception e) {
@@ -145,7 +144,9 @@ public class RestApiFakeImpl implements RestApi {
                 .cache();
     }
 
-    private void extractMatchDetail(JSONArray array, List<MatchDetailDto> details) throws JSONException {
+    private List<MatchDetailDto> extractMatchDetail(JSONArray array) throws JSONException {
+        List<MatchDetailDto> details = new ArrayList<>();
+
         for (int i = 0; i < array.length(); i++) {
             JSONObject stats = array.getJSONObject(i);
 
@@ -162,6 +163,8 @@ public class RestApiFakeImpl implements RestApi {
 
             details.add(detail);
         }
+
+        return details;
     }
 
     private PerformanceDto getDetailDto(JSONObject performance) throws JSONException {
