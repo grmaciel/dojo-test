@@ -1,5 +1,7 @@
 package com.gilson.dojotest.ws;
 
+import android.support.annotation.NonNull;
+
 import com.gilson.dojotest.ws.dto.MatchDetailDto;
 import com.gilson.dojotest.ws.dto.MatchDto;
 import com.gilson.dojotest.ws.dto.MatchHistoryDto;
@@ -32,7 +34,6 @@ import rx.schedulers.Schedulers;
 public class RestApiFakeImpl implements RestApi {
     private Observable<List<MatchDto>> queryMatchsObservable;
     private Observable<List<MatchDetailDto>> queryMatchsDetailObservable;
-    private Observable<MatchDetailDto> queryMatchDetailObservable;
 
     public RestApiFakeImpl() {
         this.queryMatchsObservable = getQueryMatchsObservable();
@@ -92,17 +93,22 @@ public class RestApiFakeImpl implements RestApi {
     @Override
     public Observable<MatchDto> queryMatch(final long matchId) {
         return this.queryMatchsObservable
-                .flatMap(new Func1<List<MatchDto>, Observable<MatchDto>>() {
-                    @Override
-                    public Observable<MatchDto> call(List<MatchDto> matchDetailDtos) {
-                        for (MatchDto match : matchDetailDtos) {
-                            if (match.id == matchId) {
-                                return Observable.just(match);
-                            }
-                        }
-                        return Observable.empty();
+                .flatMap(getMatchById(matchId));
+    }
+
+    @NonNull
+    private Func1<List<MatchDto>, Observable<MatchDto>> getMatchById(final long matchId) {
+        return new Func1<List<MatchDto>, Observable<MatchDto>>() {
+            @Override
+            public Observable<MatchDto> call(List<MatchDto> matchDetailDtos) {
+                for (MatchDto match : matchDetailDtos) {
+                    if (match.id == matchId) {
+                        return Observable.just(match);
                     }
-                });
+                }
+                return Observable.empty();
+            }
+        };
     }
 
     @Override
@@ -123,27 +129,9 @@ public class RestApiFakeImpl implements RestApi {
                     JSONObject obj = new JSONObject(getJsonDetail());
 
                     if (obj.has("match_stats")) {
-                        JSONArray array = new JSONObject(getJsonDetail()).getJSONArray("match_stats");
-
+                        JSONArray array = obj.getJSONArray("match_stats");
                         List<MatchDetailDto> details = new ArrayList<>();
-
-                        for (int i = 0; i < array.length(); i++) {
-                            JSONObject stats = array.getJSONObject(i);
-
-                            MatchDetailDto detail = new MatchDetailDto();
-                            detail.idGame = stats.getLong("game_id");
-                            detail.performance = new ArrayList<>();
-
-                            JSONArray performances = stats
-                                    .getJSONArray("performanceBreakedown");
-
-                            for (int j = 0; j < performances.length(); j++) {
-                                detail.performance.add(getDetailDto(performances.getJSONObject(j)));
-                            }
-
-                            details.add(detail);
-                        }
-
+                        extractMatchDetail(array, details);
                         subscriber.onNext(details);
                         subscriber.onCompleted();
                     }
@@ -151,11 +139,29 @@ public class RestApiFakeImpl implements RestApi {
                     subscriber.onError(e);
                     e.printStackTrace();
                 }
-
             }
         }).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .cache();
+    }
+
+    private void extractMatchDetail(JSONArray array, List<MatchDetailDto> details) throws JSONException {
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject stats = array.getJSONObject(i);
+
+            MatchDetailDto detail = new MatchDetailDto();
+            detail.idGame = stats.getLong("game_id");
+            detail.performance = new ArrayList<>();
+
+            JSONArray performances = stats
+                    .getJSONArray("performanceBreakedown");
+
+            for (int j = 0; j < performances.length(); j++) {
+                detail.performance.add(getDetailDto(performances.getJSONObject(j)));
+            }
+
+            details.add(detail);
+        }
     }
 
     private PerformanceDto getDetailDto(JSONObject performance) throws JSONException {
