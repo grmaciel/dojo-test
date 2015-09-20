@@ -1,11 +1,13 @@
 package com.gilson.dojotest.presenter;
 
+import android.support.annotation.NonNull;
+
 import com.gilson.dojotest.view.MatchDetailView;
 import com.gilson.dojotest.ws.RestApi;
 import com.gilson.dojotest.ws.dto.MatchDetailDto;
 import com.gilson.dojotest.ws.dto.MatchDto;
 
-import rx.Subscriber;
+import rx.Observer;
 import rx.functions.Action1;
 
 /**
@@ -22,33 +24,41 @@ public class MatchDetailPresenter {
     }
 
     private void loadData() {
+        view.configureToolbar();
         view.showLoading();
 
         api.queryMatch(view.getMatchId())
-                .subscribe(new Action1<MatchDto>() {
-                    @Override
-                    public void call(MatchDto matchDto) {
-                        view.renderToolbarInfo(matchDto);
-                    }
-                });
+                .subscribe(displayMatchInfo());
 
         api.queryMatchDetail(view.getMatchId())
-                .subscribe(new Subscriber<MatchDetailDto>() {
-                    @Override
-                    public void onCompleted() {
-                        view.hideLoading();
-                    }
+                .subscribe(new MatchDetailObserver());
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        view.showError(e.toString());
-                        view.hideLoading();
-                    }
+    @NonNull
+    private Action1<MatchDto> displayMatchInfo() {
+        return new Action1<MatchDto>() {
+            @Override
+            public void call(MatchDto matchDto) {
+                view.renderToolbarInfo(matchDto);
+            }
+        };
+    }
 
-                    @Override
-                    public void onNext(MatchDetailDto matchDetailDto) {
-                        view.renderMatchDetail(matchDetailDto.performance);
-                    }
-                });
+    private class MatchDetailObserver implements Observer<MatchDetailDto> {
+        @Override
+        public void onCompleted() {
+            view.hideLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            view.showError(e.toString());
+            view.hideLoading();
+        }
+
+        @Override
+        public void onNext(MatchDetailDto matchDetailDto) {
+            view.renderMatchDetail(matchDetailDto.performance);
+        }
     }
 }

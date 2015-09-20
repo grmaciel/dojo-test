@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.gilson.dojotest.R;
 import com.gilson.dojotest.di.component.DaggerMatchPresenterComponent;
@@ -29,6 +30,8 @@ import butterknife.ButterKnife;
 public class MatchHistoryActivity extends BaseActivity implements MatchView {
     @Bind(R.id.matchInfoRecycler)
     RecyclerView matchInfoRecycler;
+    @Bind(R.id.rlProgress)
+    RelativeLayout rlProgress;
     @Inject
     MatchHistoryPresenter presenter;
 
@@ -36,9 +39,11 @@ public class MatchHistoryActivity extends BaseActivity implements MatchView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match);
-
         ButterKnife.bind(this);
+        inject();
+    }
 
+    private void inject() {
         DaggerMatchPresenterComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .matchPresenterModule(new MatchPresenterModule(this))
@@ -58,12 +63,12 @@ public class MatchHistoryActivity extends BaseActivity implements MatchView {
 
     @Override
     public void showLoading() {
-
+        rlProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-
+        rlProgress.setVisibility(View.GONE);
     }
 
     public IOnItemClickListener<MatchDto> getOnItemClickListener() {

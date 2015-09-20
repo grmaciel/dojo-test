@@ -52,14 +52,14 @@ public class ViewUtil {
     }
 
     public static Spannable getMatchPlayerSpannable(Context context, String matchStatus, String champion) {
-        Spannable text = new SpannableString(matchStatus + " " +
-                context.getResources().getString(R.string.as) +
-                " " + champion);
+        String separator = " " + context.getResources().getString(R.string.as) + " ";
+
+        Spannable text = new SpannableString(matchStatus + separator + champion);
         text.setSpan(new ForegroundColorSpan(Color.BLACK), 0, matchStatus.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        text.setSpan(new ForegroundColorSpan(Color.LTGRAY), matchStatus.length(), matchStatus.length() + 4,
+        text.setSpan(new ForegroundColorSpan(Color.LTGRAY), matchStatus.length(), matchStatus.length() + separator.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        text.setSpan(new ForegroundColorSpan(Color.BLACK), matchStatus.length() + 4, text.length(),
+        text.setSpan(new ForegroundColorSpan(Color.BLACK), matchStatus.length() + separator.length(), text.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return text;

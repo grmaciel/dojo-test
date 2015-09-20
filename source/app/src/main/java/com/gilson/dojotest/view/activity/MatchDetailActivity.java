@@ -81,15 +81,12 @@ public class MatchDetailActivity extends BaseActivity implements MatchDetailView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_detail);
-
         ButterKnife.bind(this);
 
         Bundle bundle = getIntent().getExtras();
         this.idMatch = bundle.getLong(PARAM_ID_MATCH);
         imgBadge.setImageResource(bundle.getInt(PARAM_ID_BADGE_RES));
-
         inject();
-        configureToolbar();
     }
 
     private void inject() {
@@ -101,7 +98,8 @@ public class MatchDetailActivity extends BaseActivity implements MatchDetailView
                 .inject(this);
     }
 
-    private void configureToolbar() {
+    @Override
+    public void configureToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");

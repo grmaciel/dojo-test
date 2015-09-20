@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import rx.Subscriber;
+import rx.Observer;
 import rx.functions.Func1;
 
 /**
@@ -19,7 +19,7 @@ public class MatchHistoryPresenter {
     private final RestApi api;
     MatchView view;
 
-    public MatchHistoryPresenter(MatchView view,  RestApi api) {
+    public MatchHistoryPresenter(MatchView view, RestApi api) {
         this.view = view;
         this.api = api;
         this.loadData();
@@ -29,23 +29,7 @@ public class MatchHistoryPresenter {
         view.showLoading();
         api.queryMatchs(-1)
                 .map(addTimeDivisions())
-                .subscribe(new Subscriber<List<MatchDto>>() {
-                    @Override
-                    public void onCompleted() {
-                        view.hideLoading();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        view.showError(e.toString());
-                        view.hideLoading();
-                    }
-
-                    @Override
-                    public void onNext(List<MatchDto> matchDtos) {
-                        view.renderMatches(matchDtos);
-                    }
-                });
+                .subscribe(new MatchObserver());
     }
 
     private Func1<? super List<MatchDto>, List<MatchDto>> addTimeDivisions() {
@@ -57,7 +41,6 @@ public class MatchHistoryPresenter {
 
                 for (int i = 0; i < matchDtos.size(); i++) {
                     MatchDto match = matchDtos.get(i);
-
                     /**
                      * I'm not sure how the date groupings comes from the server so
                      * i created the divisions and changed the date a bit
@@ -66,24 +49,43 @@ public class MatchHistoryPresenter {
                     if (match.createDate.before(first)) {
                         MatchDto division = new MatchDto();
                         division.dateOnly = true;
-                        String dateLabel;
-                        if (DateUtil.getDayDateDifference(first, match.createDate) == 1) {
-                            dateLabel = "YESTERDAY";
-                        } else {
-                            dateLabel = DateUtil.getDateMonthYear(match.createDate)
-                                    .toUpperCase();
-                        }
-
-                        division.dateLabel = dateLabel;
-
+                        division.dateLabel = getSeparatorLabel(first, match);
                         newList.add(division);
                     }
-
                     newList.add(match);
                 }
 
                 return newList;
             }
         };
+    }
+
+    private String getSeparatorLabel(Date first, MatchDto match) {
+        String dateLabel;
+        if (DateUtil.getDayDateDifference(first, match.createDate) == 1) {
+            dateLabel = "YESTERDAY";
+        } else {
+            dateLabel = DateUtil.getDateMonthYear(match.createDate)
+                    .toUpperCase();
+        }
+        return dateLabel;
+    }
+
+    private class MatchObserver implements Observer<List<MatchDto>> {
+        @Override
+        public void onCompleted() {
+            view.hideLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            view.showError(e.toString());
+            view.hideLoading();
+        }
+
+        @Override
+        public void onNext(List<MatchDto> matchDtos) {
+            view.renderMatches(matchDtos);
+        }
     }
 }

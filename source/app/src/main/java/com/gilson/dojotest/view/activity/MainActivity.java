@@ -37,8 +37,11 @@ public class MainActivity extends BaseActivity implements ICardListener, MainVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
+        inject();
+    }
+
+    private void inject() {
         DaggerMainPresenterComponent.builder().
                 applicationComponent(getApplicationComponent())
                 .mainPresenterModule(new MainPresenterModule(this))
@@ -50,22 +53,6 @@ public class MainActivity extends BaseActivity implements ICardListener, MainVie
     protected void onResume() {
         super.onResume();
         presenter.onResume();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -84,13 +71,18 @@ public class MainActivity extends BaseActivity implements ICardListener, MainVie
     public void renderCardsResume(MatchDto match) {
         this.matchCard = match;
         cardGrouper.setVisibility(View.VISIBLE);
-        cardGrouper.configureCard(
-                ViewUtil.getMatchStatus(this, match.win),
-                match.champion,
-                match.gameMode + " • " + match.lane + " " +
-                        this.getResources().getString(R.string.lane),
-                ViewUtil.getBadgeResource(match.totalPerformance),
-                this);
+        cardGrouper
+                .withBadge(ViewUtil.getBadgeResource(match.totalPerformance))
+                .withChampionName(match.champion)
+                .withMatchStatus(ViewUtil.getMatchStatus(this, match.win))
+                .withMatchDetail(getMatchDetail(match))
+                .withClickListener(this)
+                .build();
+    }
+
+    private String getMatchDetail(MatchDto match) {
+        return match.gameMode + " • " + match.lane + " " +
+                this.getResources().getString(R.string.lane);
     }
 
     @Override

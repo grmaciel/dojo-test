@@ -3,6 +3,7 @@ package com.gilson.dojotest.view.custom;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -20,35 +21,22 @@ import com.gilson.dojotest.view.ViewUtil;
 /**
  * Created by Gilson Maciel on 16/09/2015.
  */
-public class CustomCardGrouper extends LinearLayout implements View.OnTouchListener {
+public class CustomCardGrouper extends LinearLayout implements View.OnTouchListener, ICardBuilder {
     private OnLayoutChangeListener layoutChangeListener;
     private float mStartY;
     private float mStartViewY;
     private boolean moving = false;
     private float movableCardY;
-    private ICardListener cardListener;
+    private ICardListener cardListener = new NullCardListener();
     private View bottom;
-    private String matchStatus;
-    private String champion;
-    private String matchDetail;
+    private String matchStatus = "";
+    private String champion = "";
+    private String matchDetail = "";
     private int badgeResource;
 
     public CustomCardGrouper(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.configureLayout();
-    }
-
-    public void configureCard(String matchStatus,
-                              String champion,
-                              String matchDetail,
-                              int badgeResource,
-                              ICardListener cardListener) {
-        this.cardListener = cardListener;
-        this.matchStatus = matchStatus;
-        this.champion = champion;
-        this.matchDetail = matchDetail;
-        this.badgeResource = badgeResource;
-        this.populateCardData();
     }
 
     private void configureLayout() {
@@ -71,7 +59,7 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
          */
         int smallHeight = (int) (this.getHeight() * 0.3);
 
-        this.bottom = LayoutInflater.from(getContext()).inflate(R.layout.movable_card_layout, null);//new View(getContext());
+        this.bottom = LayoutInflater.from(getContext()).inflate(R.layout.movable_card_layout, null);
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, this.getHeight());
         bottom.setLayoutParams(layoutParams);
         bottom.setBackgroundResource(R.drawable.card_background);
@@ -104,8 +92,11 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
             return;
         }
 
-        TextView txt = (TextView) bottom.findViewById(R.id.txtCardStatus);
-        txt.setText(ViewUtil.getMatchPlayerSpannable(getContext(), matchStatus, champion));
+        if (!TextUtils.isEmpty(matchStatus) || !TextUtils.isEmpty(champion)) {
+            TextView txt = (TextView) bottom.findViewById(R.id.txtCardStatus);
+            txt.setText(ViewUtil.getMatchPlayerSpannable(getContext(), matchStatus, champion));
+        }
+
         TextView txtMatch = (TextView) bottom.findViewById(R.id.txtCardMatch);
         txtMatch.setText(matchDetail);
         ImageView img = (ImageView) bottom.findViewById(R.id.imgMatchRank);
@@ -132,6 +123,9 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
                 break;
 
             case MotionEvent.ACTION_MOVE:
+                /**
+                 * For future events that get fired after reaching the threshold
+                 */
                 if (!moving) {
                     v.setY(movableCardY);
                     return false;
@@ -187,5 +181,54 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
                 populateCardData();
             }
         }, 500);
+    }
+
+    @Override
+    public ICardBuilder withMatchStatus(String status) {
+        this.matchStatus = status;
+        return this;
+    }
+
+    @Override
+    public ICardBuilder withChampionName(String champion) {
+        this.champion = champion;
+        return this;
+    }
+
+    @Override
+    public ICardBuilder withMatchDetail(String detail) {
+        this.matchDetail = detail;
+        return this;
+    }
+
+    @Override
+    public ICardBuilder withBadge(int badgeResId) {
+        this.badgeResource = badgeResId;
+        return this;
+    }
+
+    @Override
+    public ICardBuilder withClickListener(ICardListener listener) {
+        this.cardListener = listener;
+        return this;
+    }
+
+    @Override
+    public void build() {
+        this.populateCardData();
+    }
+
+    /**
+     * Created by Gilson Maciel on 20/09/2015.
+     * Null pattern
+     */
+    public class NullCardListener implements ICardListener{
+        @Override
+        public void onCardDragged() {
+        }
+
+        @Override
+        public void onCardClick() {
+        }
     }
 }
