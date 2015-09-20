@@ -209,7 +209,10 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
 
     @Override
     public ICardBuilder withClickListener(ICardListener listener) {
-        this.cardListener = listener;
+        if (listener != null) {
+            this.cardListener = listener;
+        }
+
         return this;
     }
 

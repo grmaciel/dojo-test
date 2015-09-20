@@ -63,7 +63,6 @@ public class RestApiFakeImpl implements RestApi {
                     subscriber.onError(e);
                     e.printStackTrace();
                 }
-
                 subscriber.onCompleted();
             }
         }).subscribeOn(Schedulers.newThread())

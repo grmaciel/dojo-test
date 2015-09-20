@@ -15,6 +15,8 @@ import com.gilson.dojotest.R;
 public class MatchHistoryDecorator extends RecyclerView.ItemDecoration {
     private final Context context;
     private final Drawable separator;
+    private int dividerHeight = 70;
+    private float dividerWidth = 10;
 
     public MatchHistoryDecorator(Context context) {
         this.context = context;
@@ -24,7 +26,7 @@ public class MatchHistoryDecorator extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        outRect.bottom = 70;
+        outRect.bottom = dividerHeight;
     }
 
     @Override
@@ -35,9 +37,9 @@ public class MatchHistoryDecorator extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             int top = child.getTop() + params.topMargin;
-            separator.setBounds((int) (center - convertPixelsToDp(10)),
-                    top - 70,
-                    (int) (center + convertPixelsToDp(10)),
+            separator.setBounds((int) (center - convertPixelsToDp(dividerWidth)),
+                    top - dividerHeight,
+                    (int) (center + convertPixelsToDp(dividerWidth)),
                     top);
 
             separator.draw(c);
