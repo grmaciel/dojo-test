@@ -157,7 +157,7 @@ public class RestApiFakeImpl implements RestApi {
                     .getJSONArray("performanceBreakedown");
 
             for (int j = 0; j < performances.length(); j++) {
-                detail.performance.add(getDetailDto(performances.getJSONObject(j)));
+                detail.performance.add(getPerformanceDto(performances.getJSONObject(j)));
             }
 
             details.add(detail);
@@ -166,7 +166,7 @@ public class RestApiFakeImpl implements RestApi {
         return details;
     }
 
-    private PerformanceDto getDetailDto(JSONObject performance) throws JSONException {
+    private PerformanceDto getPerformanceDto(JSONObject performance) throws JSONException {
         PerformanceDto perfDto = new PerformanceDto();
         perfDto.performance = (String) performance.remove("performance");
         JSONArray names = performance.names();
