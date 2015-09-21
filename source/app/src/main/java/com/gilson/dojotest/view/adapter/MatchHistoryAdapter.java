@@ -105,20 +105,7 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
             holder.playerRankPager.setAdapter(new RankPagerAdapter(context,
                     pages,
                     getOnPagerItemClick()));
-            holder.playerRankPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    configureScrollArrow(holder);
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                }
-            });
+            holder.playerRankPager.addOnPageChangeListener(getPageChangeListener(holder));
         } else {
             holder.playerRankPager.setAdapter(new RankPagerAdapter(context,
                     new RankPagerDto[]{dto},
@@ -126,6 +113,23 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
         }
 
         configureScrollArrow(holder);
+    }
+
+    private ViewPager.OnPageChangeListener getPageChangeListener(final PlayerViewHolder holder) {
+        return new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                configureScrollArrow(holder);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        };
     }
 
     private void configureScrollArrow(final PlayerViewHolder holder) {
@@ -138,7 +142,7 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
             holder.arrowLeft.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    holder.playerRankPager.setCurrentItem(currentItem-1);
+                    holder.playerRankPager.setCurrentItem(currentItem - 1);
                 }
             });
         } else {
@@ -150,7 +154,7 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
             holder.arrowRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    holder.playerRankPager.setCurrentItem(currentItem+1);
+                    holder.playerRankPager.setCurrentItem(currentItem + 1);
                 }
             });
         } else {
