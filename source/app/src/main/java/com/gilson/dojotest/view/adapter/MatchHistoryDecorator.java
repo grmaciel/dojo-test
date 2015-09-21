@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.gilson.dojotest.R;
+import com.gilson.dojotest.view.ViewUtil;
 
 /**
  * Created by Gilson Maciel on 16/09/2015.
@@ -16,7 +17,7 @@ public class MatchHistoryDecorator extends RecyclerView.ItemDecoration {
     private final Context context;
     private final Drawable separator;
     private int dividerHeight = 70;
-    private float dividerWidth = 10;
+    private float dividerWidth = 5;
 
     public MatchHistoryDecorator(Context context) {
         this.context = context;
@@ -47,6 +48,6 @@ public class MatchHistoryDecorator extends RecyclerView.ItemDecoration {
     }
 
     private float convertPixelsToDp(float px) {
-        return px / context.getResources().getDisplayMetrics().density;
+        return ViewUtil.getDpFromPixel(context, px);
     }
 }

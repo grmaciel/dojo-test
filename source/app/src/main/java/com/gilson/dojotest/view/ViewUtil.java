@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.TypedValue;
 
 import com.gilson.dojotest.R;
 import com.gilson.dojotest.domain.Badge;
@@ -68,5 +69,16 @@ public class ViewUtil {
     public static String getMatchStatus(Context context, boolean win) {
         return win ? context.getResources().getString(R.string.win) :
                 context.getResources().getString(R.string.defeat);
+    }
+
+
+    public static int getPixelFromDp(Context context, int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                context.getResources().getDisplayMetrics());
+    }
+
+    public static float getDpFromPixel(Context context, float px) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, px,
+                context.getResources().getDisplayMetrics());
     }
 }
