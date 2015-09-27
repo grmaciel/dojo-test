@@ -104,8 +104,7 @@ public class CustomCardGrouper extends LinearLayout implements View.OnTouchListe
     }
 
     private int getPixelFromDp(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                getContext().getResources().getDisplayMetrics());
+        return ViewUtil.getPixelFromDp(getContext(), dp);
     }
 
     @Override

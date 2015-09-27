@@ -125,7 +125,7 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
             holder.arrowLeft.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    holder.playerRankPager.setCurrentItem(currentItem-1);
+                    holder.playerRankPager.setCurrentItem(currentItem - 1);
                 }
             });
         } else {
@@ -137,7 +137,7 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
             holder.arrowRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    holder.playerRankPager.setCurrentItem(currentItem+1);
+                    holder.playerRankPager.setCurrentItem(currentItem + 1);
                 }
             });
         } else {

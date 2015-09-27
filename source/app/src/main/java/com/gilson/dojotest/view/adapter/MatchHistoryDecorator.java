@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.gilson.dojotest.R;
+
 import com.gilson.dojotest.ws.dto.MatchDto;
 
 /**
@@ -31,6 +32,7 @@ public class MatchHistoryDecorator extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        outRect.bottom = dividerHeight;
         int pos = parent.getChildAdapterPosition(view);
         MatchHistoryAdapter adapter = (MatchHistoryAdapter) parent.getAdapter();
         MatchDto item = adapter.getItem(pos);
