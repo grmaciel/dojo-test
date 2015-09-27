@@ -10,7 +10,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".view.activity.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,8 +19,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activity.MatchHistoryActivity" />
-        <activity android:name=".view.activity.MatchDetailActivity" />
+        <activity
+            android:name=".view.activity.MatchHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.MatchDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

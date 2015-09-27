@@ -48,7 +48,7 @@ public class RestApiFakeImpl implements RestApi {
                     /**
                      * WS Query
                      */
-                    Thread.sleep(2000);
+//                    Thread.sleep(2000);
                     GsonBuilder builder = new GsonBuilder();
                     builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
                         @Override
@@ -59,7 +59,7 @@ public class RestApiFakeImpl implements RestApi {
 
                     MatchHistoryDto history = builder.create().fromJson(getJsonMatches(), MatchHistoryDto.class);
                     subscriber.onNext(history.matchHistory);
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     subscriber.onError(e);
                     e.printStackTrace();
                 }
@@ -123,7 +123,7 @@ public class RestApiFakeImpl implements RestApi {
                     /**
                      * WS Query
                      */
-                    Thread.sleep(1000);
+//                    Thread.sleep(1000);
 
                     JSONObject obj = new JSONObject(getJsonDetail());
 

@@ -3,10 +3,12 @@ package com.gilson.dojotest.view.adapter;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gilson.dojotest.R;
@@ -24,6 +26,7 @@ import butterknife.ButterKnife;
 public class MatchHistoryAdapter extends RecyclerView.Adapter {
     private static final int DATE_DIVIDER = 0;
     private static final int REGULAR_LAYOUT = 1;
+    private static final int TOP_LAYOUT = 2;
 
     private final List<MatchDto> items;
     private final Context context;
@@ -39,8 +42,11 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         RecyclerView.ViewHolder holder;
-
-        if (viewType == REGULAR_LAYOUT) {
+        if (viewType == TOP_LAYOUT) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.match_history_first_item, parent, false);
+            holder = new PlayerViewHolder(view);
+        } else if (viewType == REGULAR_LAYOUT) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.match_history_item, parent, false);
             holder = new PlayerViewHolder(view);
@@ -55,6 +61,9 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
+        if (position == 0) {
+            return TOP_LAYOUT;
+        }
         MatchDto match = items.get(position);
         return match.dateOnly ?
                 DATE_DIVIDER : REGULAR_LAYOUT;
@@ -63,8 +72,10 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final MatchDto item = items.get(position);
-
-        if (getItemViewType(position) == REGULAR_LAYOUT) {
+        if (getItemViewType(position) == DATE_DIVIDER) {
+            DateViewHolder customHolder = (DateViewHolder) holder;
+            customHolder.txtPeriod.setText(item.dateLabel);
+        } else {
             PlayerViewHolder customHolder = (PlayerViewHolder) holder;
             setupViewPager(customHolder, position, item);
 
@@ -80,9 +91,11 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
                     listener.onClick(v, item);
                 }
             });
-        } else {
-            DateViewHolder customHolder = (DateViewHolder) holder;
-            customHolder.txtPeriod.setText(item.dateLabel);
+
+            if (position == 0) {
+                customHolder.smallThrophy
+                        .setImageResource(ViewUtil.getBadgeResource(item.totalPerformance));
+            }
         }
     }
 
@@ -91,41 +104,15 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
         dto.parentPosition = position;
         dto.performance = item.totalPerformance;
 
-        /**
-         * Just adding an extra item to the first position so you can see the side scroll
-         * between badges, the json wasn't very clear on how this was suppose to work
-         */
-        if (position == 0) {
-            RankPagerDto extra = new RankPagerDto();
-            extra.parentPosition = position;
-            extra.performance = "gold";
-
-            RankPagerDto[] pages = {dto, extra};
-
-            holder.playerRankPager.setAdapter(new RankPagerAdapter(context,
-                    pages,
-                    getOnPagerItemClick()));
-            holder.playerRankPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    configureScrollArrow(holder);
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                }
-            });
-        } else {
-            holder.playerRankPager.setAdapter(new RankPagerAdapter(context,
-                    new RankPagerDto[]{dto},
-                    getOnPagerItemClick()));
-        }
+        holder.playerRankPager.setAdapter(new RankPagerAdapter(context,
+                new RankPagerDto[]{dto},
+                getOnPagerItemClick()));
 
         configureScrollArrow(holder);
+    }
+
+    public MatchDto getItem(int position) {
+        return items.get(position);
     }
 
     private void configureScrollArrow(final PlayerViewHolder holder) {
@@ -175,6 +162,8 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
     static class PlayerViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.imgPlayerAvatar)
         ImageView avatar;
+        @Bind(R.id.imgSmallThrophy)
+        ImageView smallThrophy;
         @Bind(R.id.matchRankPager)
         ViewPager playerRankPager;
         @Bind(R.id.txtMatchStatus)
@@ -201,6 +190,12 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
+        }
+    }
+
+    static class TopViewHolder extends RecyclerView.ViewHolder {
+        public TopViewHolder(View itemView) {
+            super(itemView);
         }
     }
 }

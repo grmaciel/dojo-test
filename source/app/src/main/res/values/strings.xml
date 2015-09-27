@@ -8,5 +8,6 @@
     <string name="win">Win</string>
     <string name="defeat">Defeat</string>
     <string name="lane">lane</string>
+    <string name="feedback">Send Feedback</string>
 
 </resources>

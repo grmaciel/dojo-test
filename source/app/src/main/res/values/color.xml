@@ -5,7 +5,10 @@
     <color name="DojoHighlight">#00FFFF</color>
     <color name="DojoLightColor">#432C6D</color>
     <color name="DojoLightPurple">#7B4BFF</color>
+    <color name="OrangeButton">#FF4D11</color>
 
+
+    <color name="TxtCardGray">#4A4A4A</color>
     <color name="LtGray">#bdbdbd</color>
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>
