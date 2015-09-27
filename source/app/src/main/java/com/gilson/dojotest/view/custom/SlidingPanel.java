@@ -965,17 +965,14 @@ public class SlidingPanel extends ViewGroup {
             // If the scroll view isn't under the touch, pass the
             // event along to the dragView.
             if (!isViewUnder(mScrollableView, (int) mInitialMotionX, (int) mInitialMotionY)) {
-                Log.d("", "VIEW UNDER");
 //                return super.dispatchTouchEvent(ev);
             }
 
             // Which direction (up or down) is the drag moving?
             if (dy * (mIsSlidingUp ? 1 : -1) > 0) { // Collapsing
-                Log.d("", "Collapsing");
                 // Is the child less than fully scrolled?
                 // Then let the child handle it.
                 if (getScrollableViewScrollPosition() > 0) {
-                    Log.d("", "Deixa pro filhote");
                     mIsScrollableViewHandlingTouch = true;
                     return super.dispatchTouchEvent(ev);
                 }
@@ -984,7 +981,6 @@ public class SlidingPanel extends ViewGroup {
                 // Then we need to rejigger things so that the
                 // drag panel gets a proper down event.
                 if (mIsScrollableViewHandlingTouch) {
-                    Log.d("", "Proper down event");
                     // Send an 'UP' event to the child.
                     MotionEvent up = MotionEvent.obtain(ev);
                     up.setAction(MotionEvent.ACTION_CANCEL);
@@ -997,7 +993,6 @@ public class SlidingPanel extends ViewGroup {
                 }
 
                 mIsScrollableViewHandlingTouch = false;
-                Log.d("", "FINAL");
                 return this.onTouchEvent(ev);
             } else if (dy * (mIsSlidingUp ? 1 : -1) < 0) { // Expanding
                 // Is the panel less than fully expanded?
@@ -1219,7 +1214,7 @@ public class SlidingPanel extends ViewGroup {
             float resizePercent = (float) mTmpRect.bottom / topPanelInitalBottom;
             ImageView img = (ImageView) ((LinearLayout) child).getChildAt(1);
 
-            float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300 * resizePercent, getResources().getDisplayMetrics());
+            float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200 * resizePercent, getResources().getDisplayMetrics());
             img.getLayoutParams().width = (int) pixels;
             img.requestLayout();
 

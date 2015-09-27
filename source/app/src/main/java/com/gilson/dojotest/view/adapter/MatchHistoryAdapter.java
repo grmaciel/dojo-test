@@ -192,10 +192,4 @@ public class MatchHistoryAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, itemView);
         }
     }
-
-    static class TopViewHolder extends RecyclerView.ViewHolder {
-        public TopViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
 }
