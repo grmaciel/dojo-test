@@ -1224,11 +1224,6 @@ public class SlidingPanel extends ViewGroup {
             img.requestLayout();
 
 
-//            MyScrollPanel.LayoutParams params = (MyScrollPanel.LayoutParams) child.getLayoutParams();
-////            params.height = (int) pixels;
-//            params.width = (int) pixels;
-////            child.setLayoutParams(params);
-
             result = super.drawChild(canvas, child, drawingTime);
 
             if (mCoveredFadeColor != 0 && mSlideOffset > 0) {
@@ -1236,7 +1231,7 @@ public class SlidingPanel extends ViewGroup {
                 final int imag = (int) (baseAlpha * mSlideOffset);
                 final int color = imag << 24 | (mCoveredFadeColor & 0xffffff);
                 mCoveredFadePaint.setColor(color);
-//                canvas.drawRect(mTmpRect, mCoveredFadePaint);
+                canvas.drawRect(mTmpRect, mCoveredFadePaint);
             }
         } else {
             result = super.drawChild(canvas, child, drawingTime);

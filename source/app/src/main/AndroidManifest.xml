@@ -20,9 +20,6 @@
         </activity>
 
         <activity
-            android:name=".view.activity.MatchHistoryActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.MatchDetailActivity"
             android:screenOrientation="portrait" />
     </application>
